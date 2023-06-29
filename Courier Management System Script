@@ -1,0 +1,95 @@
+Create table Customer (CustomerID number(3)primary key ,
+user_name varchar2 (20),
+user_email varchar2 (20),
+user_passwordd varchar2 (20),
+user_address varchar2(50));
+insert into Customer values
+(1, 'ahmed', 'ahmed@gmail.com' , '123456' , 'cairo' );
+insert into Customer values
+(2, ' mohamed ', 'mohamed@gmail.com' , '956247' , 'giza' );
+insert into Customer values
+(3, 'ibarhim', 'ibrahim@gmail.com' , '1275556' , 'cairo' );
+insert into Customer values
+(4, 'said', 'said@gmail.com' , '3456' , 'alex' );
+insert into Customer values
+(5, 'anas', 'anas@gmail.com' , '123' , 'haram' );
+Create table aadmin (admin_id number(3) primary key,
+nname varchar2 (20),
+email varchar2 (20),
+passwordd varchar2 (20));
+insert into aadmin values
+(1, 'mo', 'mo@ aadmin.com' , '123456');
+insert into aadmin values
+(2, ' eman ', 'eman@ aadmin.com' , '956247');
+insert into aadmin values
+(3, 'bob', 'bob@ aadmin.com' , '1275556');
+insert into aadmin values
+(4, 'man', 'man@ aadmin.com' , '3456');
+insert into aadmin values
+(5, 'lena', 'lena@ aadmin.com' , '123');
+Create table Delivery_person (DP_id number(3)primary key, 
+dp_name varchar2 (20),
+dp_email varchar2 (20),
+dp_passwordd varchar2 (20), 
+rate number(20));
+insert into Delivery_person values
+(1, 'karm', 'karm@Delivery.com' , '123456' , 3 );
+insert into Delivery_person values
+(2, 'jon', 'jonD@elivery.com' , '956247' , 2 );
+insert into Delivery_person values
+(3, 'rana', 'rana@Delivery.com' , '1275556' , 5 );
+insert into Delivery_person values
+(4, 'said', 'said@Delivery.com' , '3456' , 2);
+insert into Delivery_person values
+(5, 'anas', 'anas@Delivery.com' , '123' , 1 );
+Create table Orders (order_id number(3) primary key,
+pick_up_address varchar2(50), 
+delivery_address varchar2(50), 
+item_description varchar2(100), 
+weight number (9), 
+quantity number(3),
+delivery_cost number (3),
+order_status varchar2(20), 
+cid number(20) references Customer (CustomerID),
+dpid number(20) references Delivery_person (DP_id));
+insert into Orders values
+(1, '3 Makram Ebaied street', 'Ain shams university', 'Cosmetics', 1, 10,50,'completed', 3,2);
+insert into Orders values
+(2, '2 Ahmed shawqi street', 'city crepe abbasya', 'keyss', 0.3, 5,30,'cancelled', 2,5);
+insert into Orders values
+(3, '5 Al Dwidar street', 'Infantry House', 'Cat', 5, 1,80,'completed', 3,3);
+insert into Orders values
+(4, 'Ain shams university' , '9 Makram Ebaied street', 'papers', 0.2,100,30,'pending', 3,4);
+insert into Orders values
+(5, '50 Saraya el quoba square', 'Al Abassia square', 'car', 500,1,200,'completed', 3,1);
+Create table Deliver (CustomerID number(3) References Customer (CustomerID), 
+order_id number (3)References Orders (order_id),
+constraint deliver_PK primary key(CustomerID,order_id));
+insert into Deliver values (2,1);
+insert into Deliver values (5,2);
+insert into Deliver values (3,3);
+insert into Deliver values (4,4);
+insert into Deliver values (1,5);
+Create table Shipments (shipment_id number (3) primary Key,
+shipment_order number(3) references Orders (order_id),
+shipment_status varchar2(20),
+shipment_DP_id number (3) references Delivery_person (DP_id),
+shipment_CustomerID number(3) references Customer(CustomerID));
+insert into Shipments values (1,1,'Done',3,2);
+insert into Shipments values (2,3,'in_way',3,3);
+insert into Shipments values (3,4,'assigned',4,4);
+insert into shipments values (4,5,'Done',3,1);
+Create table Reports (report_id number(3) primary Key,
+order_details varchar2(100), 
+delivery_status varchar2(100), 
+customer_notes varchar2(100), 
+billing_details varchar2(100));
+insert into Reports values (1,'fromm 3 Makram Ebaied street too Ain shams university typee : cosmetics 
+quantity: 10 weight: 1kgm','completed','be careful','50EP cash');
+insert into Reports values (2,'fromm 2 Ahmed shawqi street too city crepe abbasya typee : keyss 
+quantity: 5 weight: 0.3kgm','cancelled','I need these keyss very fastt' ,'nothingg');
+insert into Reports values (3,'fromm 5 Al Dwidar street too infantry house typee : cat quantity: 1 weight: 
+500kgm','completed','calll me whenn you arrive' ,'200EP visa');
+insert into Reports values (4,'fromm 50 saraya el qouba square too Al Abassia square typee : papers 
+quantity: 100 weight: 0.2kgm','completed','be careful','50EP cash');
+commit;
